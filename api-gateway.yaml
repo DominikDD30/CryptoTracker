@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: api-gateway
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+#    nginx.ingress.kubernetes.io/rewrite-target: /$2
+#     nginx.ingress.kubernetes.io/rewrite-target: /
+#    nginx.ingress.kubernetes.io/auth-response-headers: "Content-Type"
+#    nginx.ingress.kubernetes.io/enable-cors: "true"
+#    nginx.ingress.kubernetes.io/cors-allow-origin: "http://localhost:5174"
+#    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS, DELETE"
+#    nginx.ingress.kubernetes.io/cors-allow-headers: "DNT,X-CustomHeader,X-LANG,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,X-Api-Key,X-Device-Id,Access-Control-Allow-Origin"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "cryptoapp.127.0.0.1.nip.io"
+      http:
+        paths:
+          - path: /subscriptions(/.*)?
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: user-service
+                port:
+                  number: 8080
+          - path: /crypto(/|$)(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: price-aggregator-service
+                port:
+                  number: 8081
+
+
+

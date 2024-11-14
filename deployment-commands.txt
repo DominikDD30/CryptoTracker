@@ -1,0 +1,13 @@
+kubectl apply -f subscription-secret.yaml
+kubectl apply -f user-service-secret.yaml
+kubectl apply -f zookeeper-service.yaml
+kubectl apply -f kafka-service.yaml
+kubectl apply -f subscription-stateful-set.yaml
+kubectl apply -f user_service_deployment.yaml
+kubectl apply -f data_fetcher_deployment.yaml
+kubectl apply -f price_aggregator_deployment.yaml
+kubectl apply -f alert_service_deployment.yaml
+kubectl apply -f email_service_deployment.yaml
+kubectl apply -f api-gateway.yaml
+
+

@@ -1,0 +1,51 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: alert-service
+spec:
+  type: ClusterIP
+  selector:
+    app: alert-service-pod
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8082
+      targetPort: http
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: alert-service-deployment
+  labels:
+    app: alert-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: alert-service-pod
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 50%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      labels:
+        app: alert-service-pod
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: alert-service
+          image: alert-service:1.0.0
+          env:
+            - name: TRIGGER_PERIOD_IN_SECONDS
+              value: "10"
+          resources:
+            limits:
+              memory: "256Mi"
+            requests:
+              cpu: "100m"
+              memory: "64Mi"
+          ports:
+            - containerPort: 8082
+              name: http

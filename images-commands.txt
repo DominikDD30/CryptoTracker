@@ -1,0 +1,11 @@
+minikube image build -t user-service:1.0.0 UserService
+
+minikube image build -t data-fetcher:1.0.0 MarketDataFetcher
+
+minikube image build -t price-aggregator:1.0.0 PriceAggregator
+
+minikube image build -t alert-service:1.0.0 AlertService
+
+minikube image build -t email-service:1.0.0 EmailService
+
+

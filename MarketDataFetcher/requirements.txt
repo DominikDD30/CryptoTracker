@@ -1,0 +1,8 @@
+fastapi
+uvicorn[standard]
+requests
+kafka-python-ng
+pydantic
+typing
+
+

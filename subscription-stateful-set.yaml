@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: subscription-headless-service
+spec:
+  clusterIP: None
+  selector:
+    app: subscription-db
+  ports:
+    - port: 5432
+      name: postgres
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: subscription-stateful-set
+spec:
+  serviceName: subscription-headless-service
+  replicas: 1
+  selector:
+    matchLabels:
+      app: subscription-db
+  volumeClaimTemplates:
+    - metadata:
+        name: subscription-db-storage
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 500Mi
+  template:
+    metadata:
+      labels:
+        app: subscription-db
+    spec:
+      containers:
+        - name: subscription-db
+          image: postgres:15.0
+          envFrom:
+            - secretRef:
+                name: subscription-secret
+          ports:
+            - containerPort: 5432
+              name: postgres
+          volumeMounts:
+            - name: subscription-db-storage
+              mountPath: /var/lib/postgresql/data

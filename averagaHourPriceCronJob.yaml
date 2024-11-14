@@ -1,0 +1,18 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: crypto-price-fetcher-cronjob
+spec:
+  schedule: "57 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: crypto-price-fetcher
+              image: curlimages/curl:latest
+              command: ["/bin/sh", "-c", "curl -X POST http://price-aggregator-service:8081/crypto/calculate/last-hour"]
+              imagePullPolicy: IfNotPresent
+          restartPolicy: Never
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 1
