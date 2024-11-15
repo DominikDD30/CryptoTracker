@@ -6,6 +6,11 @@ CryptoTracker is a microservices-based application that provides real-time crypt
 
 CryptoTracker consists of five microservices, each handling a specific part of the system’s functionality. Data flows through the system via Kafka topics, enabling efficient, asynchronous communication between services. Redis is used as a caching layer for quick access, while PostgreSQL is the persistent storage for historical and aggregated data.
 
+
+
+https://github.com/user-attachments/assets/3a9ff6ac-67e4-4360-85ed-6085c7ccf96e
+
+
 ## Technologies Used
 
 - **Languages**: Python FastAPI (MarketDataFetcher), Java (other services), Typescript
@@ -17,7 +22,7 @@ CryptoTracker consists of five microservices, each handling a specific part of t
   - React for simple frontend client
 - **Other Tools**:
   - Binance API for live cryptocurrency price data
-  - Spring Mail library for sending notifications
+  - JavaMail library for sending notifications
 
 ## Microservices
 
@@ -44,7 +49,7 @@ CryptoTracker consists of five microservices, each handling a specific part of t
 ### 5. EmailService
 - **Language**: Java
 - **Functionality**: Consumes alert messages from the `alert` Kafka topic and sends email notifications to users whose alert conditions are met.
-- **Dependencies**: Email-sending service/library for notification delivery
+- **Dependencies**: JavaMail library for notification delivery
 
 ## Kubernetes Deployment
 
