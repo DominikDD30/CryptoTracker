@@ -1,0 +1,257 @@
+/* App.css */
+
+*{
+  width: 100%;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f3f4f6;
+  margin: 0;
+  /* padding: 20px; */
+}
+
+.crypto-tracker {
+  max-width: 1600px;
+  width: 1400px;
+  padding-top: 00px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.crypto-tracker h1 {
+  font-size: 32px;
+  margin-bottom: 60px;
+}
+
+.crypto-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  table-layout: fixed;
+}
+
+
+.crypto-table th, .crypto-table td {
+  padding: 12px 16px;
+  text-align: center;
+  border-bottom: 1px solid #eaecef;
+}
+
+.crypto-table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  color: #3a3a3a;
+  
+}
+
+.crypto-table td {
+  /* height: 50px; */
+  padding: 5px 15px;
+  font-size: 16px;
+  color: #333333;
+  width: 100%;
+}
+
+.crypto-table th:first-child, .crypto-table td:first-child {
+  width: 50px; 
+}
+
+.crypto-table th:nth-child(2), .crypto-table td:nth-child(2) {
+  width: 200px; 
+}
+
+.crypto-table th:nth-child(n+2), .crypto-table td:nth-child(n+2) {
+  width: 70px; /* Ustaw szerokość dla kolumny 'Price' */
+}
+
+.crypto-table th:last-child, .crypto-table td:last-child {
+  width: 60px; /* Ustaw szerokość dla kolumny 'Price' */
+}
+
+
+.crypto-table .positive {
+  color: #16c784; /* Green color for positive change */
+}
+
+.crypto-table .negative {
+  color: #ea3943; /* Red color for negative change */
+}
+
+.crypto-table .crypto-name {
+  display: flex;
+  align-items: center;
+}
+
+.crypto-table .crypto-name span {
+  font-size: 15px;
+  margin-left: 10px;
+}
+
+.crypto-table .crypto-name img {
+  margin-right: 13px;
+  width: 32px;
+  height: 32px;
+}
+
+.subscribe-link{
+ text-decoration: underline;
+ cursor: pointer;
+ text-decoration:underline;
+ /* text-shadow: #ea3943;  */
+ /* font-size: 20px; */
+ color: goldenrod;
+}
+
+.custom-alert {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #3d79c7; 
+  color: white;
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: none; 
+  z-index: 9999; 
+  width: 600px;
+  text-align: center;
+}
+
+.loading{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+@media (orientation: portrait) {
+
+  .crypto-table {
+    width: auto; 
+    min-width: 600px; 
+    margin-top: 60px;
+  }
+
+  .crypto-tracker h1 {
+   position: fixed;
+  }
+
+  .crypto-table .crypto-name {
+    display: block;
+    margin-right: auto;
+    text-align: left;
+    padding-left: 25px;
+  }
+  
+  .crypto-table .crypto-name span ,.crypto-name strong {
+    width: 20%;
+    font-size: 15px;
+    margin-left: 0px;
+  }
+  
+  .crypto-tracker {
+    width: 100vw; 
+    overflow-x: auto; 
+    -webkit-overflow-scrolling: touch; 
+  }
+
+  .crypto-table th:nth-child(2), .crypto-table td:nth-child(2)
+  {
+    width: 200px;
+  }
+
+  .crypto-table th, .crypto-table td {
+    width: 150px; 
+  }
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .crypto-table th:nth-child(2), .crypto-table td:nth-child(2)
+  {
+    padding-left: 10px;
+  }
+
+  .crypto-table{
+    /* width: 100%; */
+    width: 100vw;
+  }
+
+  .crypto-tracker h1 {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+
+   .crypto-table th:nth-child(1), .crypto-table td:nth-child(1),
+   .crypto-table th:nth-child(4), .crypto-table td:nth-child(4),
+  .crypto-table th:nth-child(6), .crypto-table td:nth-child(6)
+  {
+    display: none;
+  }
+
+  .crypto-tracker {
+    width: 100%;
+  }
+
+  .crypto-table th, .crypto-table td {
+    font-size: 14px;
+    padding: 6px;
+  }
+}
+
+@media (max-width: 768px) {
+  .crypto-tracker {
+    width: 100%;
+  }
+  .crypto-tracker h1 {
+    font-size: 20px;
+  }
+
+  .crypto-table th, .crypto-table td {
+   
+    font-size: 12px;
+  }
+
+  .crypto-table .crypto-name img {
+    width: 28px;
+    height: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  /* .crypto-table th:nth-child(1), .crypto-table td:nth-child(1),
+  .crypto-table th:nth-child(3), .crypto-table td:nth-child(3),
+  .crypto-table th:nth-child(5), .crypto-table td:nth-child(5),
+  .crypto-table th:nth-child(7), .crypto-table td:nth-child(7) 
+  {
+    display: none;
+  } */
+
+  .crypto-tracker {
+    width: 100%;
+    padding: 0px;
+    margin: 0;
+  }
+
+  .crypto-table th, .crypto-table td {
+    padding: 6px 4px;
+    font-size: 12px;
+  }
+
+  .crypto-table .crypto-name {
+    flex-direction: column;
+  }
+
+  .subscribe-link {
+    font-size: 12px;
+  }
+  .crypto-table .crypto-name img {
+    width: 22px;
+    height: 22px;
+  }
+}

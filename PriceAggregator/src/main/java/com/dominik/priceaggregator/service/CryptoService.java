@@ -34,12 +34,15 @@ public class CryptoService {
 
     public List<CryptoPriceDto> getHourlyPrices() {
         LocalDateTime thisHour = LocalDateTime.of(LocalDate.now(), LocalTime.now().withMinute(0).withSecond(0).withNano(0));
+        System.out.println("thisHour "+thisHour);
         List<HourlyCryptoHistoryEntity> pricesEntities = hourlyCryptoHistoryRepository.findAllByDate(thisHour).orElseGet(() ->
                 hourlyCryptoHistoryRepository.findAllByDate(thisHour.minusHours(1)).orElse(List.of())
         );
+
         if(pricesEntities.isEmpty()){
             return List.of();
         }else{
+            System.out.println("prices first "+pricesEntities.getFirst());
          return   pricesEntities.stream()
                  .map(pricesEntity->new CryptoPriceDto(pricesEntity.getSymbol(),pricesEntity.getAverage())).toList();
         }
@@ -47,15 +50,16 @@ public class CryptoService {
 
     public Map<String, BigDecimal> getLastHourHistory() {
         LocalDateTime now = LocalDateTime.now();
-        List<CryptoPriceDto> lastHourCryptos = cryptoRepository.findAllByDateBetween(now.minusHours(1),now);
+        List<HistoryEntity> lastHourCryptos = cryptoRepository.findAllByDateBetween(now.minusHours(1),now);
+        System.out.println("first "+lastHourCryptos.getFirst()+"last "+lastHourCryptos.getLast());
         Map<String, BigDecimal> cryptosWithAveragePrices = lastHourCryptos.stream()
                 .collect(Collectors.groupingBy(
-                        CryptoPriceDto::symbol, // Group by symbol
+                        HistoryEntity::getSymbol, // Group by symbol
                         Collectors.collectingAndThen(
                                 Collectors.toList(), // Collect the items into a list
                                 list -> {
                                     BigDecimal sum = list.stream()
-                                            .map(CryptoPriceDto::price)
+                                            .map(HistoryEntity::getPrice)
                                             .reduce(BigDecimal.ZERO, BigDecimal::add);
                                     long count = list.size(); // Get the count of elements for each symbol
                                     return sum.divide(new BigDecimal(count), BigDecimal.ROUND_HALF_UP); // Calculate average
@@ -63,6 +67,7 @@ public class CryptoService {
                         )
                 ));
 
+        System.out.println("cryptosWithAveragePrices "+cryptosWithAveragePrices);
         return cryptosWithAveragePrices;
     }
 

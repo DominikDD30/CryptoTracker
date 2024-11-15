@@ -1,6 +1,6 @@
 import asyncio
 import json
-import requests
+import aiohttp
 from fastapi import FastAPI
 from kafka import KafkaProducer
 from pydantic import BaseModel
@@ -27,14 +27,17 @@ KAFKA_SERVERS = ["kafka-service:9092"]
 producer = KafkaProducer(bootstrap_servers=KAFKA_SERVERS, value_serializer=lambda v: json.dumps(v).encode('utf-8'))
 
 
-def fetch_price(symbol):
+async def fetch_price(session, symbol):
     url = f"https://api.binance.com/api/v3/ticker/price?symbol={symbol}"
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.json()
-    else:
-        print(f"Error fetching data for {symbol}: {response.status_code}")
-        return None
+    try:
+        async with session.get(url) as response:
+            if response.status == 200:
+                return await response.json()
+            else:
+                print(f"Error fetching data for {symbol}: {response.status}")
+    except Exception as e:
+        print(f"Exception for {symbol}: {e}")
+    return None
 
 
 def publish_to_kafka(data):
@@ -46,20 +49,24 @@ def publish_to_kafka(data):
 
 
 async def fetch_and_publish_prices():
-    while True:
-        all_price_data = []
 
-        for symbol in cryptocurrenciesList:
-            price_data = fetch_price(symbol)
-            if price_data:
-                crypto_price_dto = CryptoPriceDto(symbol=price_data["symbol"], price=price_data["price"])
-                all_price_data.append(crypto_price_dto)
+    async with aiohttp.ClientSession() as session:
+        while True:
+            tasks = [fetch_price(session, symbol) for symbol in cryptocurrenciesList]
+            all_price_data = []
 
-        if all_price_data:
-            wrapper_dto = CryptoPricesWrapperDto(priceDtos=all_price_data)
-            publish_to_kafka(wrapper_dto)
+            for task in asyncio.as_completed(tasks):
+                price_data = await task
+                if price_data:
+                    crypto_price_dto = CryptoPriceDto(symbol=price_data["symbol"], price=price_data["price"])
+                    all_price_data.append(crypto_price_dto)
 
-        await asyncio.sleep(10)
+            if all_price_data:
+                wrapper_dto = CryptoPricesWrapperDto(priceDtos=all_price_data)
+                publish_to_kafka(wrapper_dto)
+
+
+            await asyncio.sleep(6)
 
 
 app = FastAPI()

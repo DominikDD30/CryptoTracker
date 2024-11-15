@@ -12,5 +12,5 @@ import java.util.List;
 public interface HistoryRepository extends JpaRepository<HistoryEntity,Integer> {
 
 
-    List<CryptoPriceDto> findAllByDateBetween(LocalDateTime startDate, LocalDateTime endDate);
+    List<HistoryEntity> findAllByDateBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

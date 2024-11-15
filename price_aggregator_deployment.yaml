@@ -19,7 +19,7 @@ metadata:
   labels:
     app: price-aggregator-deployment
 spec:
-  replicas: 2
+  replicas: 4
   selector:
     matchLabels:
       app: price-aggregator-pod
@@ -42,11 +42,11 @@ spec:
                 name: crypto-secret
           resources:
             limits:
-              memory: "256Mi"
-              cpu: "1000m"
+              memory: "512Mi"
+              cpu: "1500m"
             requests:
-              cpu: "200m"
-              memory: "64Mi"
+              cpu: "500m"
+              memory: "128Mi"
           ports:
             - containerPort: 8081
               name: http
@@ -62,14 +62,14 @@ spec:
     kind: Deployment
     name: price-aggregator-deployment
   minReplicas: 1
-  maxReplicas: 5
+  maxReplicas: 8
   metrics:
     - type: Resource
       resource:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 50
+          averageUtilization: 40
     - type: Resource
       resource:
         name: memory
